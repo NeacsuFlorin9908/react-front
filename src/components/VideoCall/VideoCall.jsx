@@ -17,8 +17,6 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
   const userVideo = useRef();
   const connectionRef = useRef();
 
-  console.log('CalledUserId', calledUserId);
-
   const { client } = useChatContext();
   useEffect(() => {
     const getUsers = async () => {
@@ -43,15 +41,34 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
     });
   }, []);
 
+  socket.on('callUser', (data) => {
+    setReceivingCall(true);
+    setCaller(data.from);
+    setCalledUserId(data.from);
+    setName(data.name);
+    setCallerSignal(data.signal);
+  });
+
   socket.on('callDisconnected', (data) => {
-    console.log('CallDisconnected', data.disconnectedId, calledUserId);
     if (data.disconnectedId === calledUserId) {
       endCall();
     }
   });
 
+  socket.on('callEnded', (data) => {
+    if (connectionRef.current) {
+      connectionRef.current.destroy();
+    }
+    endCall();
+  });
+
+  socket.on('declineCall', (data) => {
+    setCalledUserId(undefined);
+    setCalledUserName('');
+    connectionRef.current.destroy();
+  });
+
   const endCall = async () => {
-    console.log('endcall');
     try {
       myVideo.current.srcObject.getTracks().forEach((track) => track.stop());
       setCalledUserId(undefined);
@@ -64,32 +81,7 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
     }
   };
 
-  socket.on('callUser', (data) => {
-    setReceivingCall(true);
-    setCaller(data.from);
-    setCalledUserId(data.from);
-    setName(data.name);
-    setCallerSignal(data.signal);
-  });
-
-  socket.on('callDisconnected', (data) => {
-    console.log('CallDisconnected', data.disconnectedId, calledUserId);
-    if (data.disconnectedId === calledUserId) {
-      endCall();
-    }
-  });
-
-  socket.on('callEnded', (data) => {
-    console.log('CallEnded', data.callerId, calledUserId);
-    if (connectionRef.current) {
-      console.log('connection closed');
-      connectionRef.current.destroy();
-    }
-    endCall();
-  });
-
   const callUser = (id, name) => {
-    console.log('call');
     setCalledUserId(id);
     setCalledUserName(name);
     const peer = new Peer({
@@ -124,8 +116,6 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
   };
 
   const answerCall = () => {
-    console.log('answer');
-    // setCalledUserId(caller);
     setCallAccepted(true);
     const peer = new Peer({
       initiator: false,
@@ -151,13 +141,35 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
     if (connectionRef.current) {
       connectionRef.current.destroy();
     }
-    console.log('leaveCall');
     endCall();
+  };
+
+  const declineCall = () => {
+    socket.emit('declineCall', { to: calledUserId });
+    setCalledUserId(undefined);
+    setReceivingCall(false);
+    setCallAccepted(false);
+    setReceivingCall(false);
+    setCaller(undefined);
+    setName('');
+    setCallerSignal(undefined);
+  };
+
+  const goBack = () => {
+    try {
+      myVideo.current.srcObject.getTracks().forEach((track) => track.stop());
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      setIsVideo(false);
+    }
   };
 
   return (
     <>
-      {receivingCall && !callAccepted && <AnswerCallModal name={name} answerCall={answerCall} />}
+      {receivingCall && !callAccepted && (
+        <AnswerCallModal name={name} answerCall={answerCall} declineCall={declineCall} />
+      )}
       <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
         <div style={{ display: 'flex', width: '100%', height: '80vh' }}>
           <div style={{ display: 'flex', justifyContent: 'center', width: '50%', padding: '2rem' }}>
@@ -171,7 +183,7 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
           </div>
         </div>
         <div style={{ padding: '1rem' }}>
-          {!callAccepted && (
+          {!callAccepted && !calledUserId && (
             <>
               <h3>Pe cine ați vrea să sunați?</h3>
               <div style={{ display: 'flex' }}>
@@ -192,6 +204,7 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
             </>
           )}
           {callAccepted && !callEnded && <button onClick={() => leaveCall()}>Închideți apel</button>}
+          {(!callAccepted || !calledUserId) && <button onClick={() => goBack()}>Înapoi</button>}
         </div>
       </div>
     </>
