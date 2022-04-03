@@ -1,23 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
-import Peer from 'simple-peer';
-import AnswerCallModal from '../AnswerCallModal/AnswerCallModal';
+import { VideoCallContext } from '../../contexts/VideoCallContext';
 
-const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
+const VideoCall = ({ setIsVideo }) => {
   const [users, setUsers] = useState([]);
-  const [stream, setStream] = useState();
-  const [callEnded, setCallEnded] = useState(false);
-  const [caller, setCaller] = useState('');
-  const [callerSignal, setCallerSignal] = useState();
-  const [name, setName] = useState('');
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [calledUserId, setCalledUserId] = useState(undefined);
-  const [calledUserName, setCalledUserName] = useState('');
-  const myVideo = useRef();
-  const userVideo = useRef();
-  const connectionRef = useRef();
-
   const { client } = useChatContext();
+  const {
+    socket,
+    callEnded,
+    setCallEnded,
+    setCaller,
+    setCallerSignal,
+    setName,
+    receivingCall,
+    setReceivingCall,
+    calledUserId,
+    setCalledUserId,
+    calledUserName,
+    setCalledUserName,
+    callAccepted,
+    setCallAccepted,
+    stream,
+    setStream,
+    connectionRef,
+    myVideo,
+    userVideo,
+    callUser,
+    setMyName,
+    setMySocketId,
+  } = useContext(VideoCallContext);
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -31,7 +42,11 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
       }
     };
 
-    if (client) getUsers();
+    if (client) {
+      getUsers();
+      setMyName(client.user.fullName);
+      setMySocketId(client.user.socketId);
+    }
   }, [client]);
 
   useEffect(() => {
@@ -39,15 +54,16 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
       setStream(stream);
       myVideo.current.srcObject = stream;
     });
+    return () => {
+      setCallEnded(false);
+      setCaller('');
+      setCallerSignal(undefined);
+      setName('');
+      setReceivingCall(false);
+      setCalledUserId(undefined);
+      setCalledUserName('');
+    };
   }, []);
-
-  socket.on('callUser', (data) => {
-    setReceivingCall(true);
-    setCaller(data.from);
-    setCalledUserId(data.from);
-    setName(data.name);
-    setCallerSignal(data.signal);
-  });
 
   socket.on('callDisconnected', (data) => {
     if (data.disconnectedId === calledUserId) {
@@ -81,78 +97,12 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
     }
   };
 
-  const callUser = (id, name) => {
-    setCalledUserId(id);
-    setCalledUserName(name);
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream: stream,
-    });
-    peer.on('signal', (data) => {
-      socket.emit('callUser', {
-        userToCall: id,
-        signalData: data,
-        from: client.user.socketId,
-        name: client.user.fullName,
-      });
-    });
-    peer.on('stream', (stream) => {
-      userVideo.current.srcObject = stream;
-    });
-
-    socket.on('callAccepted', (signal) => {
-      if (peer) {
-        setCallAccepted(true);
-        try {
-          peer.signal(signal);
-        } catch (err) {
-          console.warn(err);
-        }
-      }
-    });
-
-    connectionRef.current = peer;
-  };
-
-  const answerCall = () => {
-    setCallAccepted(true);
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream,
-    });
-    peer.on('signal', (data) => {
-      socket.emit('answerCall', { signal: data, to: caller });
-    });
-    peer.on('stream', (stream) => {
-      userVideo.current.srcObject = stream;
-    });
-    try {
-      peer.signal(callerSignal);
-    } catch (err) {
-      console.warn(err);
-    }
-    connectionRef.current = peer;
-  };
-
   const leaveCall = () => {
     socket.emit('endCall', { to: calledUserId });
     if (connectionRef.current) {
       connectionRef.current.destroy();
     }
     endCall();
-  };
-
-  const declineCall = () => {
-    socket.emit('declineCall', { to: calledUserId });
-    setCalledUserId(undefined);
-    setReceivingCall(false);
-    setCallAccepted(false);
-    setReceivingCall(false);
-    setCaller(undefined);
-    setName('');
-    setCallerSignal(undefined);
   };
 
   const goBack = () => {
@@ -167,9 +117,6 @@ const VideoCall = ({ socket, callAccepted, setCallAccepted, setIsVideo }) => {
 
   return (
     <>
-      {receivingCall && !callAccepted && (
-        <AnswerCallModal name={name} answerCall={answerCall} declineCall={declineCall} />
-      )}
       <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
         <div style={{ display: 'flex', width: '100%', height: '80vh' }}>
           <div style={{ display: 'flex', justifyContent: 'center', width: '50%', padding: '2rem' }}>
