@@ -25,7 +25,6 @@ if (authToken && !client.user) {
       image: cookies.get('avatarURL'),
       hashedPassword: cookies.get('hashedPassword'),
       phoneNumber: cookies.get('phoneNumber'),
-      isMedic: cookies.get('isMedic'),
     },
     authToken
   );
@@ -35,6 +34,8 @@ const App = () => {
   const [createType, setCreateType] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPrescription, setIsPrescription] = useState(false);
+  const [isHistory, setIsHistory] = useState(false);
   const { isVideo, setIsVideo, receivingCall, callAccepted, name, answerCall, declineCall, socket } =
     useContext(VideoCallContext);
 
@@ -58,7 +59,6 @@ const App = () => {
             image: cookies.get('avatarURL'),
             hashedPassword: cookies.get('hashedPassword'),
             phoneNumber: cookies.get('phoneNumber'),
-            isMedic: cookies.get('isMedic'),
           },
           authToken
         );
@@ -91,14 +91,20 @@ const App = () => {
               setCreateType={setCreateType}
               setIsEditing={setIsEditing}
               setIsVideo={setIsVideo}
+              isPrescription={isPrescription}
+              setIsPrescription={setIsPrescription}
+              isHistory={isHistory}
+              setIsHistory={setIsHistory}
             />
-            <ChannelContainer
-              isCreating={isCreating}
-              setIsCreating={setIsCreating}
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              createType={createType}
-            />
+            {!isPrescription && !isHistory && (
+              <ChannelContainer
+                isCreating={isCreating}
+                setIsCreating={setIsCreating}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                createType={createType}
+              />
+            )}
           </>
         )}
       </Chat>

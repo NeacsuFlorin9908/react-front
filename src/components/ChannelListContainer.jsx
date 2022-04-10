@@ -6,28 +6,74 @@ import { ChannelSearch, TeamChannelList, TeamChannelPreview } from './';
 import HospitalIcon from '../assets/hospital.png';
 import LogoutIcon from '../assets/logout.png';
 import VideoCallIcon from '../assets/call.png';
+import PrescriptionForm from './PrescriptionForm/PrescriptionForm';
+import MedicalHistory from './MedicalHistory/MedicalHistory';
 
 const cookies = new Cookies();
 
-const SideBar = ({ logout, setIsVideo }) => (
-  <div className='channel-list__sidebar'>
-    <div className='channel-list__sidebar__icon1'>
-      <div className='icon1__inner'>
-        <img src={HospitalIcon} alt='Hospital' width='30' />
+const SideBar = ({ logout, setIsVideo, setIsPrescription, setIsHistory }) => {
+  const { client } = useChatContext();
+  console.log('isMedic', client.user.isMedic);
+  return (
+    <div className='channel-list__sidebar'>
+      <div className='channel-list__sidebar__icon2'>
+        <div
+          className='icon1__inner'
+          onClick={() => {
+            setIsVideo(false);
+            setIsPrescription(false);
+            setIsHistory(false);
+          }}
+        >
+          <img src={HospitalIcon} alt='Hospital' width='30' />
+        </div>
+      </div>
+      <div className='channel-list__sidebar__icon2'>
+        <div
+          className='icon1__inner'
+          onClick={() => {
+            setIsHistory(false);
+            setIsPrescription(false);
+            setIsVideo(true);
+          }}
+        >
+          <img src={VideoCallIcon} alt='Logout' width='30' />
+        </div>
+      </div>
+      {client.user.isMedic === 'true' && (
+        <div className='channel-list__sidebar__icon2'>
+          <div
+            className='icon1__inner'
+            onClick={() => {
+              setIsHistory(false);
+              setIsVideo(false);
+              setIsPrescription(true);
+            }}
+          >
+            Reteta
+          </div>
+        </div>
+      )}
+      <div className='channel-list__sidebar__icon2'>
+        <div
+          className='icon1__inner'
+          onClick={() => {
+            setIsPrescription(false);
+            setIsVideo(false);
+            setIsHistory(true);
+          }}
+        >
+          Istoric
+        </div>
+      </div>
+      <div className='channel-list__sidebar__icon2'>
+        <div className='icon1__inner' onClick={logout}>
+          <img src={LogoutIcon} alt='Logout' width='30' />
+        </div>
       </div>
     </div>
-    <div className='channel-list__sidebar__icon2'>
-      <div className='icon1__inner' onClick={() => setIsVideo(true)}>
-        <img src={VideoCallIcon} alt='Logout' width='30' />
-      </div>
-    </div>
-    <div className='channel-list__sidebar__icon2'>
-      <div className='icon1__inner' onClick={logout}>
-        <img src={LogoutIcon} alt='Logout' width='30' />
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const CompanyHeader = () => (
   <div className='channel-list__header'>
@@ -50,6 +96,10 @@ const ChannelListContent = ({
   setIsEditing,
   setToggleContainer,
   setIsVideo,
+  isPrescription,
+  setIsPrescription,
+  isHistory,
+  setIsHistory,
 }) => {
   const { client } = useChatContext();
 
@@ -66,77 +116,101 @@ const ChannelListContent = ({
   };
 
   const filters = { members: { $in: [client.userID] } };
-
+  console.log(isPrescription);
   return (
     <>
-      <SideBar logout={logout} setIsVideo={setIsVideo} />
-      <div className='channel-list__list__wrapper'>
-        <CompanyHeader />
-        <ChannelSearch setToggleContainer={setToggleContainer} />
-        <ChannelList
-          filters={filters}
-          channelRenderFilterFn={customChannelTeamFilter}
-          List={(listProps) => (
-            <TeamChannelList
-              {...listProps}
-              type='team'
-              isCreating={isCreating}
-              setIsCreating={setIsCreating}
-              setCreateType={setCreateType}
-              setIsEditing={setIsEditing}
-              setToggleContainer={setToggleContainer}
-            />
-          )}
-          Preview={(previewProps) => (
-            <TeamChannelPreview
-              {...previewProps}
-              setIsCreating={setIsCreating}
-              setIsEditing={setIsEditing}
-              setToggleContainer={setToggleContainer}
-              type='team'
-            />
-          )}
-        />
-        <ChannelList
-          filters={filters}
-          channelRenderFilterFn={customChannelMessagingFilter}
-          List={(listProps) => (
-            <TeamChannelList
-              {...listProps}
-              type='messaging'
-              isCreating={isCreating}
-              setIsCreating={setIsCreating}
-              setCreateType={setCreateType}
-              setIsEditing={setIsEditing}
-              setToggleContainer={setToggleContainer}
-            />
-          )}
-          Preview={(previewProps) => (
-            <TeamChannelPreview
-              {...previewProps}
-              setIsCreating={setIsCreating}
-              setIsEditing={setIsEditing}
-              setToggleContainer={setToggleContainer}
-              type='messaging'
-            />
-          )}
-        />
-      </div>
+      <SideBar
+        logout={logout}
+        setIsVideo={setIsVideo}
+        setIsPrescription={setIsPrescription}
+        setIsHistory={setIsHistory}
+      />
+      {isPrescription ? (
+        <PrescriptionForm setIsPrescription={setIsPrescription} />
+      ) : isHistory ? (
+        <MedicalHistory setIsHistory={setIsHistory} />
+      ) : (
+        <div className='channel-list__list__wrapper'>
+          <CompanyHeader />
+          <ChannelSearch setToggleContainer={setToggleContainer} />
+          <ChannelList
+            filters={filters}
+            channelRenderFilterFn={customChannelTeamFilter}
+            List={(listProps) => (
+              <TeamChannelList
+                {...listProps}
+                type='team'
+                isCreating={isCreating}
+                setIsCreating={setIsCreating}
+                setCreateType={setCreateType}
+                setIsEditing={setIsEditing}
+                setToggleContainer={setToggleContainer}
+              />
+            )}
+            Preview={(previewProps) => (
+              <TeamChannelPreview
+                {...previewProps}
+                setIsCreating={setIsCreating}
+                setIsEditing={setIsEditing}
+                setToggleContainer={setToggleContainer}
+                type='team'
+              />
+            )}
+          />
+          <ChannelList
+            filters={filters}
+            channelRenderFilterFn={customChannelMessagingFilter}
+            List={(listProps) => (
+              <TeamChannelList
+                {...listProps}
+                type='messaging'
+                isCreating={isCreating}
+                setIsCreating={setIsCreating}
+                setCreateType={setCreateType}
+                setIsEditing={setIsEditing}
+                setToggleContainer={setToggleContainer}
+              />
+            )}
+            Preview={(previewProps) => (
+              <TeamChannelPreview
+                {...previewProps}
+                setIsCreating={setIsCreating}
+                setIsEditing={setIsEditing}
+                setToggleContainer={setToggleContainer}
+                type='messaging'
+              />
+            )}
+          />
+        </div>
+      )}
     </>
   );
 };
 
-const ChannelListContainer = ({ setCreateType, setIsCreating, setIsEditing, setIsVideo }) => {
+const ChannelListContainer = ({
+  setCreateType,
+  setIsCreating,
+  setIsEditing,
+  setIsVideo,
+  isPrescription,
+  setIsPrescription,
+  isHistory,
+  setIsHistory,
+}) => {
   const [toggleContainer, setToggleContainer] = useState(false);
 
   return (
     <>
-      <div className='channel-list__container'>
+      <div className={isPrescription ? 'channel-list__list__wrapper-width' : 'channel-list__container'}>
         <ChannelListContent
           setIsCreating={setIsCreating}
           setCreateType={setCreateType}
           setIsEditing={setIsEditing}
           setIsVideo={setIsVideo}
+          isPrescription={isPrescription}
+          setIsPrescription={setIsPrescription}
+          isHistory={isHistory}
+          setIsHistory={setIsHistory}
         />
       </div>
 
@@ -153,6 +227,7 @@ const ChannelListContainer = ({ setCreateType, setIsCreating, setIsEditing, setI
           setCreateType={setCreateType}
           setIsEditing={setIsEditing}
           setToggleContainer={setToggleContainer}
+          setIsPrescription={setIsPrescription}
         />
       </div>
     </>
