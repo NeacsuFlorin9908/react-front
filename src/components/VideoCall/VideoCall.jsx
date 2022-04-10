@@ -117,27 +117,16 @@ const VideoCall = ({ setIsVideo }) => {
 
   return (
     <>
-      <div style={{ display: 'flex', width: '100%', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', width: '100%', height: '80vh' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', width: '50%', padding: '2rem' }}>
-            {stream && <video playsInline muted ref={myVideo} autoPlay style={{ width: '30rem' }} />}
-          </div>
-          <div
-            style={{ display: 'flex', justifyContent: 'center', width: '50%', padding: '2rem', alignItems: 'center' }}
-          >
-            {calledUserId && !callAccepted && !receivingCall && <p>Sunați pe {calledUserName}</p>}
-            {callAccepted && !callEnded && <video playsInline ref={userVideo} autoPlay style={{ width: '30rem' }} />}
-          </div>
-        </div>
-        <div style={{ padding: '1rem' }}>
+      <div style={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
+        <div className='videocall__sidebar__call'>
           {!callAccepted && !calledUserId && (
             <>
-              <h3>Pe cine ați vrea să sunați?</h3>
-              <div style={{ display: 'flex' }}>
+              <p className='videocall__header__text'>Pe cine ați vrea să sunați?</p>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {users.map((user) => (
                   <div
                     key={user.id}
-                    className='user-item__wrapper'
+                    className='call__user-item__wrapper'
                     style={{ padding: '0 0.5rem' }}
                     onClick={() => callUser(user.socketId, user.fullName)}
                   >
@@ -151,7 +140,24 @@ const VideoCall = ({ setIsVideo }) => {
             </>
           )}
           {callAccepted && !callEnded && <button onClick={() => leaveCall()}>Închideți apel</button>}
-          {(!callAccepted || !calledUserId) && <button onClick={() => goBack()}>Înapoi</button>}
+          {(!callAccepted || !calledUserId) && (
+            <button className='button__close__videocall' onClick={() => goBack()}>
+              Înapoi
+            </button>
+          )}
+        </div>
+        <div className='videocall__container__wrapper'>
+          <div
+            style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', alignItems: 'center' }}
+          >
+            {stream && <video playsInline muted ref={myVideo} autoPlay className='videocall__window' />}
+          </div>
+          <div
+            style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', alignItems: 'center' }}
+          >
+            {calledUserId && !callAccepted && !receivingCall && <p>Sunați pe {calledUserName}</p>}
+            {callAccepted && !callEnded && <video playsInline ref={userVideo} autoPlay className='videocall__window' />}
+          </div>
         </div>
       </div>
     </>
