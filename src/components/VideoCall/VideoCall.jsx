@@ -139,7 +139,7 @@ const VideoCall = ({ setIsVideo }) => {
               </div>
             </>
           )}
-          {callAccepted && !callEnded && <button onClick={() => leaveCall()}>Închideți apel</button>}
+          {callAccepted && !callEnded && <button className='button__close__videocall__finish' onClick={() => leaveCall()}>Închideți apel</button>}
           {(!callAccepted || !calledUserId) && (
             <button className='button__close__videocall' onClick={() => goBack()}>
               Înapoi
@@ -155,7 +155,7 @@ const VideoCall = ({ setIsVideo }) => {
           <div
             style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '2rem', alignItems: 'center' }}
           >
-            {calledUserId && !callAccepted && !receivingCall && <p>Sunați pe {calledUserName}</p>}
+            {calledUserId && !callAccepted && !receivingCall && <p className='videocall__loading__window'>Sunați pe {calledUserName}<div className='lds-dual-ring'></div></p>}
             {callAccepted && !callEnded && <video playsInline ref={userVideo} autoPlay className='videocall__window' />}
           </div>
         </div>

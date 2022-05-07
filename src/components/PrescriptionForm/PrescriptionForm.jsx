@@ -92,12 +92,12 @@ const PrescriptionForm = () => {
   }, [client]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', margin: '2rem 0' }}>
-      <h3>Scrieți o rețetă</h3>
+    <div className='prescription__container'>
+      <h3 className='prescription__header'>Scrieți o rețetă</h3>
       <div style={{ display: 'flex', flexDirection: 'column', width: '400px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label className='form-label'>Nume Pacient</label>
-          <select className='form-input' placeholder='George Popescu' {...register('pacientName', { required: true })}>
+          <label className='prescription__form-label'>Nume Pacient</label>
+          <select className='prescription__form-input' placeholder='George Popescu' {...register('pacientName', { required: true })}>
             <option value='' disabled selected>
               Selectează pacient
             </option>
@@ -107,21 +107,21 @@ const PrescriptionForm = () => {
               </option>
             ))}
           </select>
-          {errors.pacientName && <p className='form-error'>Selectați un pacient</p>}
+          {errors.pacientName && <p className='prescription__form-error'>Selectați un pacient</p>}
 
-          <label className='form-label'>Diagnostic</label>
-          <input className='form-input' {...register('diagnosis', { required: true })}></input>
-          {errors.diagnosis && <p className='form-error'>Introduceți diagnosticul</p>}
+          <label className='prescription__form-label'>Diagnostic</label>
+          <input className='prescription__form-input' {...register('diagnosis', { required: true })}></input>
+          {errors.diagnosis && <p className='prescription__form-error'>Introduceți diagnosticul</p>}
 
-          <label className='form-label'>Observații</label>
-          <textarea className='form-input' rows='5' {...register('observations', { required: true })}></textarea>
-          {errors.observations && <p className='form-error'>Introduceți observațiile</p>}
+          <label className='prescription__form-label'>Observații</label>
+          <textarea className='prescription__form-input' rows='5' {...register('observations', { required: true })}></textarea>
+          {errors.observations && <p className='prescription__form-error'>Introduceți observațiile</p>}
 
-          <label className='form-label'>Tratament</label>
-          <textarea className='form-input' rows='5' {...register('treatment', { required: true })}></textarea>
-          {errors.treatment && <p className='form-error'>Introduceți tratamentul</p>}
+          <label className='prescription__form-label'>Tratament</label>
+          <textarea className='prescription__form-input' rows='5' {...register('treatment', { required: true })}></textarea>
+          {errors.treatment && <p className='prescription__form-error'>Introduceți tratamentul</p>}
 
-          <button type='submit'>Creează rețetă</button>
+          <button className='prescription__button' type='submit'>Creează rețetă</button>
         </form>
       </div>
     </div>

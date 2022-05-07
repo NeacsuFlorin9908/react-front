@@ -42,10 +42,10 @@ const MedicalHistory = () => {
   }, [client]);
 
   return (
-    <div>
+    <div className='history__container'>
       {client.user.isMedic === 'true' && (
         <>
-          <select onChange={handleChange}>
+          <select className='history__select' onChange={handleChange}>
             <option value='' disabled selected>
               Selectează pacient
             </option>
@@ -55,18 +55,18 @@ const MedicalHistory = () => {
               </option>
             ))}
           </select>
-          <button onClick={() => handleClick()}>Verifică istoric</button>
+          <button className='history__button' onClick={() => handleClick()}>Verifică istoric</button>
         </>
       )}
       {selectedUser && (
         <div>
           {selectedUser.medicalHistory ? (
-            <h3>Istoric pentru {selectedUser.fullName}</h3>
+            <h3 className='history__header'>Istoricul medical pentru {selectedUser.fullName}:</h3>
           ) : (
-            <h3>Nu există istoric pentru {selectedUser.fullName}</h3>
+            <h3 className='history__header'>Nu există istoric pentru {selectedUser.fullName}</h3>
           )}
           {(selectedUser.medicalHistory || []).map((item) => (
-            <div style={{ marginBottom: '1rem', border: '1px solid black' }}>
+            <div className='history__token'>
               <p>Control realizat de {item.medicFullName}</p>
               <p>Diagnostic</p>
               <p>{item.diagnosis}</p>

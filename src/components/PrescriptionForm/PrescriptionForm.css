@@ -1,15 +1,18 @@
-.form-label {
+.prescription__form-label {
   display: block;
   margin-bottom: 0.5rem;
+  font-size: large;
+  font-style: italic;
 }
 
-.form-input {
+.prescription__form-input {
   display: block;
   margin-bottom: 0.5rem;
   width: 100%;
+  font-size: medium;
 }
 
-.form-error {
+.prescription__form-error {
   color: red;
   font-size: 0.875rem;
 }

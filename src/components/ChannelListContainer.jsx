@@ -6,6 +6,8 @@ import { ChannelSearch, TeamChannelList, TeamChannelPreview } from './';
 import HospitalIcon from '../assets/hospital.png';
 import LogoutIcon from '../assets/logout.png';
 import VideoCallIcon from '../assets/call.png';
+import PrescriptionIcon from '../assets/prescription.png';
+import HistoryIcon from '../assets/history.png';
 import PrescriptionForm from './PrescriptionForm/PrescriptionForm';
 import MedicalHistory from './MedicalHistory/MedicalHistory';
 
@@ -50,7 +52,7 @@ const SideBar = ({ logout, setIsVideo, setIsPrescription, setIsHistory }) => {
               setIsPrescription(true);
             }}
           >
-            Reteta
+            <img src={PrescriptionIcon} alt='Prescription' width='30' />
           </div>
         </div>
       )}
@@ -63,7 +65,7 @@ const SideBar = ({ logout, setIsVideo, setIsPrescription, setIsHistory }) => {
             setIsHistory(true);
           }}
         >
-          Istoric
+          <img src={HistoryIcon} alt='History' width='30' />
         </div>
       </div>
       <div className='channel-list__sidebar__icon2'>

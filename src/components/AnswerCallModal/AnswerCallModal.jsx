@@ -1,5 +1,5 @@
 import React from 'react';
-import './AnswerCallModal.css';
+
 
 const AnswerCallModal = ({ name, answerCall, declineCall }) => {
   return (
@@ -7,8 +7,8 @@ const AnswerCallModal = ({ name, answerCall, declineCall }) => {
       <div className='modal-content'>
         <h3>Vă suna {name}</h3>
         <div>
-          <button onClick={() => answerCall()}>Răspunde</button>
-          <button onClick={() => declineCall()}>Închideți</button>
+          <button  className='button__answer__call' onClick={() => answerCall()}>Răspunde</button>
+          <button className='button__decline__call' onClick={() => declineCall()}>Închideți</button>
         </div>
       </div>
     </div>
