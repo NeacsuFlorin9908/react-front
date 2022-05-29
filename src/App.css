@@ -8,7 +8,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  
 }
 
 #root {
@@ -144,7 +143,6 @@ body {
   margin-top: 0.2rem;
 }
 
-
 .modal {
   position: fixed;
   z-index: 100;
@@ -155,8 +153,6 @@ body {
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
-
-  
 }
 
 .modal-content {
@@ -177,31 +173,30 @@ body {
   font-weight: 500;
 }
 .button__answer__call {
-
   color: #000000;
-  background: #44CC44;
+  background: #44cc44;
   padding: 15px 20px;
-  box-shadow: 0 0 0 0 #2EA62E;
+  box-shadow: 0 0 0 0 #2ea62e;
   font-weight: bold;
   border-radius: 20px;
   margin-right: 10px;
 }
 .button__answer__call:hover {
-  background: #6FE76F;
-  box-shadow: 0 0 0 0 #7ED37E;
+  background: #6fe76f;
+  box-shadow: 0 0 0 0 #7ed37e;
 }
 .button__decline__call {
   color: #000000;
   background: tomato;
   padding: 15px 20px;
-  box-shadow: 0 0 0 0 #CB4949;
+  box-shadow: 0 0 0 0 #cb4949;
   font-weight: bold;
   border-radius: 20px;
   margin-left: 10px;
 }
 .button__decline__call:hover {
   background: rgb(255, 147, 128);
-  box-shadow: 0 0 0 0 #EF8282;
+  box-shadow: 0 0 0 0 #ef8282;
 }
 
 .auth__form-container_fields-account span {
@@ -249,7 +244,7 @@ body {
   flex: 1;
   /* height: 800px; */
   height: 100%;
-  
+
   /* border-radius: 16px; */
   box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
 }
@@ -431,7 +426,6 @@ body {
   /* height: 800px; */
   height: 100%;
   box-shadow: inset 1px 0px 0px rgba(0, 0, 0, 0.1);
-
 }
 
 .videocall__container__wrapper {
@@ -756,7 +750,6 @@ body {
   box-shadow: 0 0 0 0 rgb(181, 177, 177);
 }
 
-
 .button__close__videocall__finish {
   background: tomato;
   font-family: Helvetica Neue, sans-serif;
@@ -770,12 +763,11 @@ body {
 
 .button__close__videocall__finish:hover {
   background: rgb(255, 147, 128);
-  box-shadow: 0 0 0 0 #EF8282;
+  box-shadow: 0 0 0 0 #ef8282;
 }
 
 .history__token {
-  
-  background-color:#107cf1;
+  background-color: #107cf1;
   box-shadow: 4px 4px 4px black;
   border-radius: 5px;
   margin: 10px;
@@ -784,8 +776,6 @@ body {
   font-size: medium;
   font-family: sans-serif;
   padding: 2rem;
-  
-  
 }
 
 .prescription__form-label {
@@ -804,43 +794,29 @@ body {
   font-size: 0.875rem;
 }
 
-
-
 .prescription__container {
-
-  
-  
-
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin: 2rem;
-  background-color: rgb(203, 202, 202);;
-  
+  background-color: rgb(203, 202, 202);
 }
 
-
-
-
-
-
 .history__container {
-  
+  display: flex;
+  margin: 2rem 0;
+}
 
-  display:flex;
+.history__wrapper {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin: 2rem;
-  
-  
-  
+  margin: 0 2rem;
 }
 
 .history__button {
-
-background: rgb(203, 202, 202);
+  background: rgb(203, 202, 202);
   font-family: Helvetica Neue, sans-serif;
   font-weight: bold;
   font-size: 18px;
@@ -855,46 +831,31 @@ background: rgb(203, 202, 202);
   box-shadow: 0 0 0 0 rgb(128, 168, 255);
 }
 
-
 .history__button:hover {
   background: rgb(128, 168, 255);
   box-shadow: 0 0 0 0 rgb(128, 168, 255);
 }
 
-
 .history__select {
-  
-
   background-color: white;
   margin: 5px;
   font-size: larger;
   font-family: sans-serif;
   font-style: italic;
   color: black;
-  width: 100vh;
+  width: 600px;
   border-radius: 2px;
   border: 5px 5px 5px 5px;
-  
-  
-  
 }
 .prescription__header {
-  
-
   margin: 5px;
   font-size: larger;
   font-family: sans-serif;
   font-style: italic;
   color: black;
-
-  
-  
-  
 }
 
 .prescription__button {
-  
-
   background: rgb(121, 120, 120);
   font-family: Helvetica Neue, sans-serif;
   font-weight: bold;
@@ -903,18 +864,9 @@ background: rgb(203, 202, 202);
   color: black;
   border-radius: 8px;
   cursor: pointer;
-
-
-  
-  
-  
 }
 
-
-
 .history__header {
-  
-
   background-color: white;
   margin: 5px;
   font-size: larger;
@@ -922,11 +874,7 @@ background: rgb(203, 202, 202);
   font-style: italic;
   color: black;
   width: 100vh;
-  
-  
-  
 }
-
 
 .videocall__loading__window {
   background-color: #d0c6c6;
@@ -941,20 +889,16 @@ background: rgb(203, 202, 202);
   font-size: 25px;
   font-weight: bold;
   font-style: italic;
-
-
 }
-
 
 .lds-dual-ring {
   margin-top: 7 px;
   display: inline-block;
   width: 80px;
   height: 80px;
- 
 }
 .lds-dual-ring:after {
-  content: " ";
+  content: ' ';
   display: block;
   width: 64px;
   height: 64px;
@@ -963,7 +907,6 @@ background: rgb(203, 202, 202);
   border: 6px solid #fff;
   border-color: var(--primary-color) transparent var(--primary-color) transparent;
   animation: lds-dual-ring 1.2s linear infinite;
-
 }
 @keyframes lds-dual-ring {
   0% {
@@ -973,8 +916,6 @@ background: rgb(203, 202, 202);
     transform: rotate(360deg);
   }
 }
-
-
 
 .create-channel__button-wrapper p {
   background: var(--primary-color);
