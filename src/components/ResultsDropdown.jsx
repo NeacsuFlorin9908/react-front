@@ -91,7 +91,7 @@ const ResultsDropdown = ({ teamChannels, directChannels, focusedId, loading, set
       )}
       {!loading && !directChannels.length ? (
         <p className='channel-search__res ults-header'>
-          <i>No direct messages found</i>
+          <i>Nu au fost găsite mesaje directe</i>
         </p>
       ) : (
         directChannels?.map((channel, i) => (

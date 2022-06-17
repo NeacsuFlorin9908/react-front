@@ -7,7 +7,7 @@ export const VideoCallContext = createContext();
 
 const VideoCallProvider = ({ children }) => {
   const video = useVideoCall();
-  const [socket] = useState(io.connect('http://localhost:8080'));
+  const [socket] = useState(io.connect('https://licenta-med-cloud.herokuapp.com/'));
   socket.on('connect', () => {
     console.log(socket.id);
   });

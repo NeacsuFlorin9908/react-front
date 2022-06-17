@@ -93,7 +93,7 @@ const PrescriptionForm = () => {
 
   return (
     <div className='prescription__container'>
-      <h3 className='prescription__header'>Scrieți o rețetă</h3>
+      <h3 className='prescription__header'>Scrieți un raport medical</h3>
       <div style={{ display: 'flex', flexDirection: 'column', width: '400px' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label className='prescription__form-label'>Nume Pacient</label>
@@ -121,7 +121,7 @@ const PrescriptionForm = () => {
           <textarea className='prescription__form-input' rows='5' {...register('treatment', { required: true })}></textarea>
           {errors.treatment && <p className='prescription__form-error'>Introduceți tratamentul</p>}
 
-          <button className='prescription__button' type='submit'>Creează rețetă</button>
+          <button className='prescription__button' type='submit'>Creează raport medical și tipărește rețetă</button>
         </form>
       </div>
     </div>
