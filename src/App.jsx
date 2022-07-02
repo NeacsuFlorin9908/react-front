@@ -8,6 +8,8 @@ import 'stream-chat-react/dist/css/index.css';
 import './App.css';
 import { VideoCallContext } from './contexts/VideoCallContext';
 import AnswerCallModal from './components/AnswerCallModal/AnswerCallModal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cookies = new Cookies();
 
@@ -66,7 +68,13 @@ const App = () => {
     })();
   }, []);
 
-  if (!authToken) return <Auth />;
+  if (!authToken)
+    return (
+      <>
+        <Auth />
+        <ToastContainer />
+      </>
+    );
 
   return (
     <div className='app__wrapper'>

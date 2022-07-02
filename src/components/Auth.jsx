@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import singinImage from '../assets/signup.jpg';
 
@@ -18,8 +19,10 @@ const initialState = {
 
 const Auth = () => {
   const [form, setForm] = useState(initialState);
-
   const [isSignup, setIsSignup] = useState(true);
+
+  const alreadyRegistered = () => toast.error('Utilizatorul este deja inregistrat!');
+  const wrongPassword = () => toast.error('Parola este gresita!');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,28 +39,38 @@ const Auth = () => {
 
     const URL = 'https://licenta-med-cloud.herokuapp.com/auth';
 
-    const {
-      data: { token, userId, hashedPassword, fullName },
-    } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
-      username,
-      password,
-      fullName: form.fullName,
-      phoneNumber,
-      avatarURL,
-    });
+    try {
+      const {
+        data: { token, userId, hashedPassword, fullName },
+      } = await axios.post(`${URL}/${isSignup ? 'signup' : 'loginAuth'}`, {
+        username,
+        password,
+        fullName: form.fullName,
+        phoneNumber,
+        avatarURL,
+      });
 
-    cookies.set('token', token);
-    cookies.set('username', username);
-    cookies.set('fullName', fullName);
-    cookies.set('userId', userId);
+      cookies.set('token', token);
+      cookies.set('username', username);
+      cookies.set('fullName', fullName);
+      cookies.set('userId', userId);
 
-    if (isSignup) {
-      cookies.set('phoneNumber', phoneNumber);
-      cookies.set('avatarURL', avatarURL);
-      cookies.set('hashedPassword', hashedPassword);
-      cookies.set('isMedic', isMedic);
+      if (isSignup) {
+        cookies.set('phoneNumber', phoneNumber);
+        cookies.set('avatarURL', avatarURL);
+        cookies.set('hashedPassword', hashedPassword);
+        cookies.set('isMedic', isMedic);
+      }
+      window.location.reload();
+    } catch (err) {
+      if (err.message.includes('409')) {
+        alreadyRegistered();
+      } else if (err.message.includes('403')) {
+        wrongPassword();
+      } else {
+        console.log(err.message);
+      }
     }
-    window.location.reload();
   };
 
   const switchMode = () => {
@@ -124,7 +137,6 @@ const Auth = () => {
             <div className='auth__form-container_fields-content_button'>
               <button>{isSignup ? 'Creează Cont' : 'Conectează-te'}</button>
             </div>
-            
           </form>
 
           <div className='auth__form-container_fields-account'>
