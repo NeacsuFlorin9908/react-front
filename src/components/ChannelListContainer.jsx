@@ -113,6 +113,7 @@ const ChannelListContent = ({
     cookies.remove('avatarURL');
     cookies.remove('hashedPassword');
     cookies.remove('phoneNumber');
+    cookies.remove('isMedic');
 
     window.location.reload();
   };

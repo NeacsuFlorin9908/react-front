@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -17,9 +17,26 @@ const initialState = {
   isMedic: false,
 };
 
+
+
 const Auth = () => {
   const [form, setForm] = useState(initialState);
   const [isSignup, setIsSignup] = useState(true);
+
+   useEffect(() =>{
+    if(form.fullName===""){
+      cookies.remove('token');
+      cookies.remove('userId');
+      cookies.remove('username');
+      cookies.remove('fullName');
+      cookies.remove('avatarURL');
+      cookies.remove('hashedPassword');
+      cookies.remove('phoneNumber');
+      cookies.remove('isMedic');
+    }
+  },[]);
+
+  
 
   const alreadyRegistered = () => toast.error('Utilizatorul este deja inregistrat!');
   const wrongPassword = () => toast.error('Parola este gresita!');
