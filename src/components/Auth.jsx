@@ -48,6 +48,7 @@ const Auth = () => {
         fullName: form.fullName,
         phoneNumber,
         avatarURL,
+        isMedic,
       });
 
       cookies.set('token', token);

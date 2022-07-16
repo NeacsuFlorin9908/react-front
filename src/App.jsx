@@ -27,6 +27,7 @@ if (authToken && !client.user) {
       image: cookies.get('avatarURL'),
       hashedPassword: cookies.get('hashedPassword'),
       phoneNumber: cookies.get('phoneNumber'),
+      isMedic: cookies.get('isMedic'),
     },
     authToken
   );
@@ -61,6 +62,7 @@ const App = () => {
             image: cookies.get('avatarURL'),
             hashedPassword: cookies.get('hashedPassword'),
             phoneNumber: cookies.get('phoneNumber'),
+            isMedic: cookies.get('isMedic'),
           },
           authToken
         );

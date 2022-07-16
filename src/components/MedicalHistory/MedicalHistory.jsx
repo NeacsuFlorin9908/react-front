@@ -46,8 +46,8 @@ const MedicalHistory = () => {
   useEffect(() => {
     if (users) {
       const myNewUsers = users.reduce((result, user) => {
-        const history = user.medicalHistory.filter((recipe) => recipe.medicName === client.user.name);
-        if (history.length) result.push({ ...user, medicalHistory: history });
+        const history = user.medicalHistory?.filter((recipe) => recipe.medicName === client.user.name);
+        if (history?.length) result.push({ ...user, medicalHistory: history });
         return result;
       }, []);
       setMyUsers(myNewUsers);
@@ -96,7 +96,7 @@ const MedicalHistory = () => {
         )}
       </div>
       <div>
-        {myUsers.length && (
+        {myUsers.length > 0 && (
           <>
             <h3 className='history__header'>Retetele scrise de catre {client.user.fullName}</h3>
             <DonutChart
